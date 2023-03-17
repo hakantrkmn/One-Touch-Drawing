@@ -18,8 +18,20 @@ public class Dot : MonoBehaviour
     {
         SetNeighbours();
     }
-    
 
+
+    public bool SearchDotOnConnections(Dot dot)
+    {
+        foreach (var conn in connections)
+        {
+            if (conn.dot == dot)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     void SetNeighbours()
     {
         foreach (var connection in connections)
@@ -135,6 +147,7 @@ public class Dot : MonoBehaviour
             }
         }
     }
+    
 
     public void DisconnectFromDot(Dot dot, bool removeLastConnection)
     {

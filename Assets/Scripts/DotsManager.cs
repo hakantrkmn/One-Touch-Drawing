@@ -101,7 +101,7 @@ public class DotsManager : MonoBehaviour
 
     private void MouseOverDot(Dot dot, Vector3 pos)
     {
-        if (dot != currentDot && !dot.connectedDots.Contains(currentDot) && !currentDot.connectedDots.Contains(dot))
+        if (dot != currentDot && !dot.connectedDots.Contains(currentDot) && !currentDot.connectedDots.Contains(dot) && dot.SearchDotOnConnections(currentDot))
         {
             dot.connectedDots.Add(currentDot);
             dot.CheckForConnection(currentDot);
@@ -112,7 +112,6 @@ public class DotsManager : MonoBehaviour
             _pointIndex++;
             _line.SetPosition(_pointIndex, pos);
             _line.positionCount = _pointIndex + 2;
-
             EventManager.CheckAllConnectionsDone();
         }
     }
