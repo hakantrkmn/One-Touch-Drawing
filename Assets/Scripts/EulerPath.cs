@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class EulerPath : MonoBehaviour
 {
-   public GameStates gameState;
+   GameStates gameState;
    List<Dot> dots;
    List<Dot> evenDots;
    List<Dot> oddDots;
 
-   public List<Dot> correctPath;
+   List<Dot> correctPath;
 
-   public int pathIndex;
+   int pathIndex;
 
    private bool showSolution;
 
@@ -23,6 +23,7 @@ public class EulerPath : MonoBehaviour
       dots = new List<Dot>();
       evenDots = new List<Dot>();
       oddDots = new List<Dot>();
+      correctPath = new List<Dot>();
    }
 
    private void OnEnable()
