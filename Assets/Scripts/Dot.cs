@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Dot : MonoBehaviour
+public class Dot : ItemBase , IInteractable
 {
     GameStates gameState;
     public List<Connection> connections;
@@ -20,7 +19,7 @@ public class Dot : MonoBehaviour
     }
 
 
-    public bool SearchDotOnConnections(Dot dot)
+    public bool SearchDotOnConnections(Dot dot) // check if this dot have connection with other dot
     {
         foreach (var conn in connections)
         {
@@ -32,8 +31,9 @@ public class Dot : MonoBehaviour
 
         return false;
     }
-    void SetNeighbours()
-    {
+
+    protected override void  SetNeighbours()
+    { // if this dot have connection with other dot but other dot doesnt have, then add connection to other dot
         foreach (var connection in connections)
         {
             var goNext = false;
@@ -58,6 +58,11 @@ public class Dot : MonoBehaviour
     }
 
     private void OnValidate()
+    {
+        CreateLine();
+    }
+
+    protected override void CreateLine() // if dot have connection with other dot, create a line and draw between
     {
         for (int i = 0; i < connections.Count; i++)
         {
@@ -97,7 +102,7 @@ public class Dot : MonoBehaviour
         }
     }
 
-    public bool CheckConnections()
+    public override bool CheckConnections() // check if this dot connections all filled
     {
         foreach (var connection in connections)
         {
@@ -116,7 +121,7 @@ public class Dot : MonoBehaviour
         EventManager.ChangeGameState += ChangeGameState;
     }
 
-    public void Reset()
+    public void Reset() // reset dot all connections
     {
         foreach (var connection in connections)
         {
@@ -137,7 +142,7 @@ public class Dot : MonoBehaviour
         gameState = state;
     }
 
-    public void CheckForConnection(Dot nextDot)
+    public override void CheckForConnection(ItemBase nextDot) // check if this dot have connection with other and fill it
     {
         foreach (var con in connections)
         {
@@ -147,10 +152,10 @@ public class Dot : MonoBehaviour
             }
         }
     }
-    
 
-    public void DisconnectFromDot(Dot dot, bool removeLastConnection)
-    {
+
+    public override void DisconnectFromDot(ItemBase dot, bool removeLastConnection) // disconnect dot from other one
+    {                                                                       // if needed remove last connected dot
         foreach (var con in connections)
         {
             if (con.dot == dot)
@@ -167,7 +172,11 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Clicked();
+        if (gameState==GameStates.Start)
+        {
+            Clicked();
+
+        }
     }
 
     public void Clicked()
